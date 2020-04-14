@@ -1,111 +1,378 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'country.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'data.dart';
+import 'indicator.dart';
+import 'about.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Corona());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class Corona extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      home: CoronaStats(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class CoronaStats extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CoronaStatsState createState() => _CoronaStatsState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _CoronaStatsState extends State<CoronaStats> {
+  int touchedIndex;
+  String dropdownValue = 'Bangladesh';
 
-  void _incrementCounter() {
+  String totalCases;
+  String newCases;
+  String totalDeaths;
+  String recovered;
+
+  String worldTotalCases = 'Loading...';
+  String worldNewCases = 'Loading...';
+  String worldTotalDeaths = 'Loading...';
+  String worldRecovered = 'Loading...';
+
+  double valueForTotalCases;
+  double valueForNewCases;
+  double valueForTotalDeaths;
+  double valueForRecovered;
+
+  void getData() async {
+    Data data = new Data(dropdownValue);
+    var fromAPI = await data.getData();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      totalCases = fromAPI['data'][0]['cases'].toString();
+      newCases = fromAPI['data'][0]['todayCases'].toString();
+      totalDeaths = fromAPI['data'][0]['deaths'].toString();
+      recovered = fromAPI['data'][0]['recovered'].toString();
+
+      worldTotalCases = fromAPI['worldStats']['cases'].toString();
+      worldNewCases = fromAPI['worldStats']['todayCases'].toString();
+      worldTotalDeaths = fromAPI['worldStats']['deaths'].toString();
+      worldRecovered = fromAPI['worldStats']['recovered'].toString();
+
+      double oneHundredPercent = double.parse(totalCases) +
+          double.parse(newCases) +
+          double.parse(totalDeaths) +
+          double.parse(recovered);
+      valueForTotalCases =
+          (int.parse(totalCases) / oneHundredPercent * 100) + 10;
+      valueForNewCases = (int.parse(newCases) / oneHundredPercent * 100) + 10;
+      valueForTotalDeaths =
+          (int.parse(totalDeaths) / oneHundredPercent * 100) + 10;
+      valueForRecovered = (int.parse(recovered) / oneHundredPercent * 100) + 10;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) {
+                  return About();
+                }),
+              );
+            },
+          )
+        ],
+        title: Text(
+          "C O R O N A    S T A T S",
+          style: TextStyle(fontFamily: "Orbitron Regular"),
+        ),
+        centerTitle: true,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "Select your country",
+                  style:
+                      TextStyle(fontFamily: "Orbitron Regular", fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.flag),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(fontFamily: "Orbitron Regular"),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.redAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                      getData();
+                      showingSections();
+                    });
+                  },
+                  items: country.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                          pieTouchData:
+                              PieTouchData(touchCallback: (pieTouchResponse) {
+                            setState(() {
+                              if (pieTouchResponse.touchInput
+                                      is FlLongPressEnd ||
+                                  pieTouchResponse.touchInput is FlPanEnd) {
+                                touchedIndex = -1;
+                              } else {
+                                touchedIndex =
+                                    pieTouchResponse.touchedSectionIndex;
+                              }
+                            });
+                          }),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 40,
+                          sections: showingSections()),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      'WORLD STATS',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: "Orbitron Regular",
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const <Widget>[
+                        Indicator(
+                          color: Colors.lightBlue,
+                          text: 'Total Cases',
+                          isSquare: true,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Indicator(
+                          color: Colors.yellowAccent,
+                          text: 'New Cases',
+                          isSquare: true,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Indicator(
+                          color: Colors.red,
+                          text: 'Total Deaths',
+                          isSquare: true,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Indicator(
+                          color: Colors.green,
+                          text: 'Recovered',
+                          isSquare: true,
+                        ),
+                        SizedBox(
+                          height: 28,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Indicator(
+                              color: Colors.lightBlue,
+                              text: '',
+                              isSquare: false,
+                            ),
+                            Text(
+                              worldTotalCases + '',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Orbitron Regular",
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Indicator(
+                              color: Colors.yellowAccent,
+                              text: '',
+                              isSquare: false,
+                            ),
+                            Text(
+                              worldNewCases,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Orbitron Regular",
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Indicator(
+                              color: Colors.red,
+                              text: '',
+                              isSquare: false,
+                            ),
+                            Text(
+                              worldTotalDeaths,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Orbitron Regular",
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Indicator(
+                              color: Colors.green,
+                              text: '',
+                              isSquare: false,
+                            ),
+                            Text(
+                              worldRecovered,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Orbitron Regular",
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 28,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 28,
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      final double fontSize = isTouched ? 25 : 16;
+      final double radius = isTouched ? 60 : 50;
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.lightBlue,
+            value: valueForTotalCases,
+            title: totalCases,
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xff000000)),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.yellowAccent,
+            value: valueForNewCases,
+            title: newCases,
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xff000000)),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: Colors.red,
+            value: valueForTotalDeaths,
+            title: totalDeaths,
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xff000000)),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: Colors.green,
+            value: valueForRecovered,
+            title: recovered,
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xff000000)),
+          );
+        default:
+          return null;
+      }
+    });
   }
 }
