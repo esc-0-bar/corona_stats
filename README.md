@@ -17,9 +17,8 @@ And of course Corona Stats is open source with a public repository on GitHub.
 
 | Version | Android | iOS |
 | --- | --- | --- |
-| 1.2.0 | [APK][2] | [IPA][3] |
-| 1.0.0 | [APK][1] | [IPA][4] |
-
+| 1.2.0 | [APK][2] | IPA |
+| 1.0.0 | [APK][1] | IPA |
 
 
 ### Screenshots
@@ -57,5 +56,3 @@ Apache License 2.0
 [//]: #DownloadLinks
 [1]: https://github.com/i-am-ahad/corona_stats/releases/download/v1.0.0/corona-stats.apk
 [2]: https://github.com/i-am-ahad/corona_stats/releases/download/v1.2.0/corona-stats.apk
-[3]: 
-[4]:
