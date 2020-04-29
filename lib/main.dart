@@ -28,10 +28,10 @@ class _CoronaStatsState extends State<CoronaStats> {
   int touchedIndex;
   String dropdownValue = 'Bangladesh';
 
-  String totalCases;
-  String newCases;
-  String totalDeaths;
-  String recovered;
+  String totalCases = '1';
+  String newCases = '1';
+  String totalDeaths = '1';
+  String recovered = '1';
 
   String worldTotalCases = 'Loading...';
   String worldNewCases = 'Loading...';
@@ -107,8 +107,7 @@ class _CoronaStatsState extends State<CoronaStats> {
               children: <Widget>[
                 Text(
                   "Select your country",
-                  style:
-                      TextStyle(fontFamily: "Orbitron Regular", fontSize: 20),
+                  style: TextStyle(fontFamily: "Ubuntu Regular", fontSize: 25),
                 ),
                 SizedBox(
                   height: 20,
@@ -118,7 +117,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                   icon: Icon(Icons.flag),
                   iconSize: 24,
                   elevation: 16,
-                  style: TextStyle(fontFamily: "Orbitron Regular"),
+                  style: TextStyle(fontFamily: "Ubuntu Regular", fontSize: 18),
                   underline: Container(
                     height: 2,
                     color: Colors.redAccent,
@@ -171,7 +170,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                       'WORLD STATS',
                       style: TextStyle(
                           fontSize: 18,
-                          fontFamily: "Orbitron Regular",
+                          fontFamily: "Ubuntu Regular",
                           fontWeight: FontWeight.w800),
                     ),
                   ],
@@ -240,7 +239,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                               worldTotalCases + '',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "Orbitron Regular",
+                                fontFamily: "Ubuntu Regular",
                               ),
                             ),
                           ],
@@ -259,7 +258,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                               worldNewCases,
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "Orbitron Regular",
+                                fontFamily: "Ubuntu Regular",
                               ),
                             ),
                           ],
@@ -278,7 +277,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                               worldTotalDeaths,
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "Orbitron Regular",
+                                fontFamily: "Ubuntu Regular",
                               ),
                             ),
                           ],
@@ -297,7 +296,7 @@ class _CoronaStatsState extends State<CoronaStats> {
                               worldRecovered,
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: "Orbitron Regular",
+                                fontFamily: "Ubuntu Regular",
                               ),
                             ),
                           ],
@@ -333,6 +332,7 @@ class _CoronaStatsState extends State<CoronaStats> {
             title: totalCases,
             radius: radius,
             titleStyle: TextStyle(
+                fontFamily: "Ubuntu Regular",
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xff000000)),

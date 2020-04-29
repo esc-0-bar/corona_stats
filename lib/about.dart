@@ -4,6 +4,7 @@ class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: Scaffold(
         body: SafeArea(
@@ -42,7 +43,7 @@ class About extends StatelessWidget {
                       title: Text(
                         'www.github.com/i-am-ahad',
                         style: TextStyle(
-                            fontFamily: 'Orbitron Regular', fontSize: 16.0),
+                            fontFamily: 'Ubuntu Regular', fontSize: 20.0),
                       ))),
               Card(
                   margin:
@@ -54,8 +55,8 @@ class About extends StatelessWidget {
                     title: Text(
                       'hello@iamahad.com',
                       style: TextStyle(
-                        fontFamily: 'Orbitron Regular',
-                        fontSize: 16.0,
+                        fontFamily: 'Ubuntu Regular',
+                        fontSize: 20.0,
                       ),
                     ),
                   ))

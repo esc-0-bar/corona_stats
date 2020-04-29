@@ -29,3 +29,6 @@ flutter:
   - family: Orbitron Regular
     fonts:
       - asset: fonts/Orbitron-VariableFont_wght.ttf
+  - family: Ubuntu Regular
+    fonts:
+      - asset: fonts/Ubuntu-Regular.ttf

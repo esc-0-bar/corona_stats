@@ -37,7 +37,7 @@ class Indicator extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: textColor,
-              fontFamily: "Orbitron Regular"),
+              fontFamily: "Ubuntu Regular"),
         )
       ],
     );
