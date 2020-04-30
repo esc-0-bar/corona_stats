@@ -27,7 +27,7 @@ And of course Corona Stats is open source with a public repository on GitHub.
 
 ![](screenshots/Screenshot1.png)
 
-![](screenshots/Screenshot1.png)
+![](screenshots/Screenshot2.png)
 
 
 
